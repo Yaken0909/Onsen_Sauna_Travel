@@ -1,0 +1,32 @@
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header d-flex align-items-center">
+      <%= image_tag @post_image.user.get_profile_image(50, 50), class: "rounded-circle mr-2" %>
+      <h5 class="mb-0 ml-3"><%= @post_image.user.name.presence || "名前未登録" %></h5>
+    </div>
+    <div class="card-body">
+      <% if @post_image.image.attached? %>
+        <%= image_tag @post_image.image.variant(resize_to_limit: [600, 400]), class: "img-fluid mb-3" %>
+      <% end %>
+
+      <h4 class="card-title">施設名：<%= @post_image.facilities_name %></h4>
+      <p class="card-text">説明：<%= @post_image.caption %></p>
+      <p class="text-muted">投稿日時：<%= @post_image.created_at.strftime('%Y/%m/%d') %></p>
+
+      <% if @post_image.user == current_user %>
+        <div class="mt-3">
+          <%= link_to '編集', edit_post_image_path(@post_image), class: "btn btn-primary mr-2" %>
+          <%= link_to '削除', post_image_path(@post_image), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "btn btn-danger" %>
+        </div>
+      <% end %>
+
+      <div class="mt-4">
+        <% if current_user.favorites.exists?(post_image_id: @post_image.id) %>
+          <%= link_to "♥ いいね解除", post_image_favorite_path(@post_image), method: :delete, class: "btn btn-outline-danger" %>
+        <% else %>
+          <%= link_to "♡ いいね", post_image_favorite_path(@post_image), method: :post, class: "btn btn-outline-primary" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

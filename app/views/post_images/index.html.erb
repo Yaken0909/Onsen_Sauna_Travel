@@ -1,0 +1,28 @@
+<h2 class="mb-4">投稿一覧</h2>
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+  <% @post_images.each do |post_image| %>
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <%= link_to post_image_path(post_image) do %>
+          <% if post_image.get_image.attached? %>
+             <%= image_tag post_image.get_image, class: "card-img-top", style: "height: 250px; object-fit: cover;" %>
+  <% else %>
+          <%= image_tag "no_image.jpg", class: "card-img-top", style: "height: 250px; object-fit: cover;" %>
+   <% end %>
+  <% end %>
+        <div class="card-body">
+          <h5 class="card-title"><%= post_image.facilities_name %></h5>
+          <p class="card-text"><%= truncate(post_image.caption, length: 60) %></p>
+          <div class="d-flex align-items-center mt-3">
+            <%= image_tag post_image.user.get_profile_image(40,40), class: "rounded-circle me-2", style: "width: 40px; height: 40px;" %>
+            <span><%= post_image.user.name %></span>
+          </div>
+        </div>
+        <div class="card-footer text-muted text-end">
+          <small>投稿日：<%= post_image.created_at.strftime('%Y/%m/%d') %></small>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
